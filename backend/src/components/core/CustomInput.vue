@@ -16,7 +16,7 @@
           <option v-for="option of selectOptions" :value="option.key">{{option.text}}</option>
         </select>
       </template>
-<!--      <template v-if="type === 'multiselect'">
+      <template v-if="type === 'multiselect'">
         <Multiselect
           mode="tags"
           track-by="id"
@@ -33,7 +33,7 @@
           :delay="0"
           :min-chars="1"
         />
-      </template>-->
+      </template>
       <template v-else-if="type === 'textarea'">
       <textarea :name="name"
                 :required="required"

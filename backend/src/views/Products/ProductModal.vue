@@ -44,8 +44,8 @@
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput type="select" class="mb-2" :select-options="categories" v-model="product.category_id" required="true" label="Category"/>
-                  <CustomInput type="select" class="mb-2" :select-options="subCategories" v-model="product.subcategory_id" label="Subcategory"/>
+                  <CustomInput type="multiselect" class="mb-2" :select-options="categories" v-model="product.product_categories" required="true" label="Category"/>
+<!--                  <CustomInput type="multiselect" class="mb-2" :select-options="subCategories" v-model="product.subcategory_id" label="Subcategory"/>-->
                   <CustomInput class="mb-2" v-model="product.title" label="Product Title"/>
                   <CustomInput type="file" class="mb-2" label="Product Image" @change="file => product.image = file"/>
                   <CustomInput type="textarea" class="mb-2" v-model="product.description" label="Description"/>
@@ -108,7 +108,7 @@ onMounted(() => {
 })
 
 const categories = computed(() => store.state.categories.data.map(category => ({
-    key: category.id, text: category.name
+    id: category.id, name: category.name
   }))
 )
 
