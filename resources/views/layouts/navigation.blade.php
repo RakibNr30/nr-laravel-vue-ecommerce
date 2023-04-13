@@ -1,3 +1,4 @@
+
 <header
     x-data="{
         mobileMenuOpen: false,
@@ -9,6 +10,28 @@
     <div>
         <a href="{{ route('home') }}" class="block py-navbar-item pl-5"> Logo </a>
     </div>
+    <div class="nav-item dropdown" style="list-style-type: none">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" style="padding: 1.5rem">
+            Menu
+        </a>
+        <ul class="dropdown-menu">
+            @foreach($globalCategories as $category)
+                @if(count($category->subcategories))
+                    <li>
+                        <a class="dropdown-item" href="{{ route('home', ['category' => $category->id]) }}"> {{ $category->name }} &raquo; </a>
+                        <ul class="submenu dropdown-menu">
+                            @foreach($category->subcategories as $subcategory)
+                                <li><a class="dropdown-item" href="{{ route('home', ['subcategory' => $subcategory->id]) }}">{{ $subcategory->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @else
+                    <li><a class="dropdown-item" href=""> {{ $category->name }} </a></li>
+                @endif
+            @endforeach
+        </ul>
+    </div>
+
     <!-- Responsive Menu -->
     <div
         class="block fixed z-10 top-0 bottom-0 height h-full w-[220px] transition-all bg-slate-900 md:hidden"
