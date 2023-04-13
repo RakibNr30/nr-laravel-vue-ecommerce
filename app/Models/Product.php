@@ -37,4 +37,19 @@ class Product extends Model
     {
         return $this->belongsToMany(ProductCategory::class, 'product_categories', 'product_id', 'category_id');
     }
+
+    public function productSubcategories(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductCategory::class, 'product_categories', 'product_id', 'subcategory_id');
+    }
+
+    public function getCategories(): HasMany
+    {
+        return $this->hasMany(ProductCategory::class, 'product_id');
+    }
+
+    public function getSubcategories(): HasMany
+    {
+        return $this->hasMany(ProductCategory::class, 'product_id');
+    }
 }

@@ -29,8 +29,10 @@ class ProductRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'description' => ['nullable', 'string'],
             'published' => ['required', 'boolean'],
+            'product_categories' => ['nullable'],
+            'product_subcategories' => ['nullable'],
             'category_id' => ['required'],
-            'sub_category_id' => ['nullable'],
+            'subcategory_id' => ['nullable'],
         ];
     }
 }

@@ -16,6 +16,24 @@
           <option v-for="option of selectOptions" :value="option.key">{{option.text}}</option>
         </select>
       </template>
+<!--      <template v-if="type === 'multiselect'">
+        <Multiselect
+          mode="tags"
+          track-by="id"
+          label="name"
+          placeholder="Select"
+          multiple="true"
+          :name="name"
+          :model="props.modelValue"
+          :options="selectOptions"
+          :close-on-select="false"
+          :searchable="true"
+          :object="true"
+          :resolve-on-load="false"
+          :delay="0"
+          :min-chars="1"
+        />
+      </template>-->
       <template v-else-if="type === 'textarea'">
       <textarea :name="name"
                 :required="required"
@@ -64,9 +82,10 @@
 <script setup>
 
 import {computed, ref} from "vue";
+import Multiselect from '@vueform/multiselect'
 
 const props = defineProps({
-  modelValue: [String, Number, File],
+  modelValue: [String, Number, File, Array],
   label: String,
   type: {
     type: String,
@@ -116,3 +135,5 @@ function onChange(value) {
 <style scoped>
 
 </style>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

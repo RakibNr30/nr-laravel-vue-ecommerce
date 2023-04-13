@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('sub_category_id')->nullable();
+            $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->timestamps();
             $table->foreignIdFor(\App\Models\User::class, 'created_by')->nullable();
             $table->foreignIdFor(\App\Models\User::class, 'updated_by')->nullable();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
-            $table->foreign('sub_category_id')->references('id')->on('subcategories')->onDelete('restrict');
+            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('restrict');
         });
     }
 

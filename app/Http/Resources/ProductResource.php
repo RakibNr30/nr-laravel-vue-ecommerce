@@ -25,6 +25,21 @@ class ProductResource extends JsonResource
             'image_url' => $this->image ?: null,
             'price' => $this->price,
             'published' => (bool)$this->published,
+            'product_categories' => $this->getCategories->map(fn($item) => [
+                'id' => $item->id,
+                'name' => $item->id,
+                'category_id' => $item->category_id,
+                'created_at' => (new \DateTime($item->created_at))->format('Y-m-d H:i:s'),
+                'updated_at' => (new \DateTime($item->updated_at))->format('Y-m-d H:i:s'),
+            ]),
+            'product_subcategories' => $this->getSubcategories->map(fn($item) => [
+                'id' => $item->id,
+                'name' => $item->id,
+                'category_id' => $item->category_id,
+                'subcategory_id' => $item->subcategory_id,
+                'created_at' => (new \DateTime($item->created_at))->format('Y-m-d H:i:s'),
+                'updated_at' => (new \DateTime($item->updated_at))->format('Y-m-d H:i:s'),
+            ]),
             'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
             'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),
         ];

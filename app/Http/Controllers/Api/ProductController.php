@@ -59,7 +59,13 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        $product->productCategories()->sync([$request->category_id]);
+        if ($data['subcategory_id'] ?? false) {
+            $product->productSubcategories()->sync([
+                ['category_id' => $request->category_id, 'subcategory_id' => $request->subcategory_id]
+            ]);
+        } else {
+            $product->productCategories()->sync([$request->category_id]);
+        }
 
         return new ProductResource($product);
     }
@@ -104,7 +110,13 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        $product->productCategories()->sync([$request->category_id]);
+        if ($data['subcategory_id'] ?? false) {
+            $product->productSubcategories()->sync([
+                ['category_id' => $request->category_id, 'subcategory_id' => $request->subcategory_id]
+            ]);
+        } else {
+            $product->productCategories()->sync([$request->category_id]);
+        }
 
         return new ProductResource($product);
     }

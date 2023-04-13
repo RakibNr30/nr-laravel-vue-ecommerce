@@ -45,6 +45,7 @@
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
                   <CustomInput type="select" class="mb-2" :select-options="categories" v-model="product.category_id" required="true" label="Category"/>
+                  <CustomInput type="select" class="mb-2" :select-options="subCategories" v-model="product.subcategory_id" label="Subcategory"/>
                   <CustomInput class="mb-2" v-model="product.title" label="Product Title"/>
                   <CustomInput type="file" class="mb-2" label="Product Image" @change="file => product.image = file"/>
                   <CustomInput type="textarea" class="mb-2" v-model="product.description" label="Description"/>
@@ -75,19 +76,20 @@
 <script setup>
 import {computed, onMounted, onUpdated, ref} from 'vue'
 import {Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
-import {ExclamationIcon} from '@heroicons/vue/outline'
 import CustomInput from "../../components/core/CustomInput.vue";
 import store from "../../store/index.js";
 import Spinner from "../../components/core/Spinner.vue";
 
 const product = ref({
   id: props.product.id,
-  category_id: props.product.category_id,
+  category_id: props.product.product_categories ? props.product.product_categories[0].category_id : '',
+  subcategory_id: props.product.product_subcategories ? props.product.product_subcategories[0].subcategory_id : '',
   title: props.product.title,
   image: props.product.image,
   description: props.product.description,
   price: props.product.price,
-  published: props.product.published
+  published: props.product.published,
+  product_categories: props.product.product_categories
 })
 
 const loading = ref(false)
@@ -102,10 +104,16 @@ const props = defineProps({
 
 onMounted(() => {
   store.dispatch('getCategories')
+  store.dispatch('getSubcategories')
 })
 
 const categories = computed(() => store.state.categories.data.map(category => ({
     key: category.id, text: category.name
+  }))
+)
+
+const subCategories = computed(() => store.state.subcategories.data.map(subCategory => ({
+    key: subCategory.id, text: subCategory.name
   }))
 )
 
@@ -119,12 +127,14 @@ const show = computed({
 onUpdated(() => {
   product.value = {
     id: props.product.id,
-    category_id: props.product.category_id,
+    category_id: props.product.product_categories ? props.product.product_categories[0].category_id : '',
+    subcategory_id: props.product.product_subcategories ? props.product.product_subcategories[0].subcategory_id : '',
     title: props.product.title,
     image: props.product.image,
     description: props.product.description,
     price: props.product.price,
     published: props.product.published,
+    product_categories: props.product.product_categories,
   }
 })
 

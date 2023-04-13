@@ -12,7 +12,7 @@ class ProductCategory extends Model
     protected $fillable = [
         'product_id',
         'category_id',
-        'sub_category_id',
+        'subcategory_id',
         'created_by',
         'updated_by'
     ];
@@ -20,7 +20,7 @@ class ProductCategory extends Model
     protected $casts = [
         'product_id' => 'integer',
         'category_id' => 'integer',
-        'sub_category_id' => 'integer',
+        'subcategory_id' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer'
     ];
