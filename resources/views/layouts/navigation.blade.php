@@ -12,14 +12,14 @@
     </div>
     <div class="nav-item dropdown" style="list-style-type: none">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" style="padding: 1.5rem">
-            Menu
+            Categories
         </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu" style="min-width: 200px">
             @foreach($globalCategories as $category)
                 @if(count($category->subcategories))
                     <li>
                         <a class="dropdown-item" href="{{ route('home', ['category' => $category->id]) }}"> {{ $category->name }} &raquo; </a>
-                        <ul class="submenu dropdown-menu">
+                        <ul class="submenu dropdown-menu" style="min-width: 200px">
                             @foreach($category->subcategories as $subcategory)
                                 <li><a class="dropdown-item" href="{{ route('home', ['subcategory' => $subcategory->id]) }}">{{ $subcategory->name }}</a></li>
                             @endforeach
