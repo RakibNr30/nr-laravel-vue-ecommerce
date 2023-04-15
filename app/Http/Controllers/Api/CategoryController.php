@@ -23,7 +23,7 @@ class CategoryController extends Controller
         $sortField = request('sort_field', 'created_at');
         $sortDirection = request('sort_direction', 'desc');
 
-        $query = Category::query()
+        $query = Category::query()->with(['subcategories'])
             ->where('name', 'like', "%{$search}%")
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);

@@ -59,13 +59,24 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        if ($data['subcategory_id'] ?? false) {
-            $product->productSubcategories()->sync([
-                ['category_id' => $request->category_id, 'subcategory_id' => $request->subcategory_id]
-            ]);
-        } else {
-            $product->productCategories()->sync([$request->category_id]);
+        $categories = [];
+        $subCategories = [];
+
+        foreach ($request->product_categories ?? [] as $productCategory) {
+            if (isset($productCategory['is_subcategory']) && $productCategory['is_subcategory']) {
+                $subCategories[] = [
+                    'category_id' => $productCategory['category_id'],
+                    'subcategory_id' => $productCategory['id'],
+                ];
+            } else {
+                $subCategories[] = [
+                    'category_id' => $productCategory['id'],
+                ];
+            }
         }
+
+        $product->productCategories()->sync($categories);
+        $product->productSubcategories()->sync($subCategories);
 
         return new ProductResource($product);
     }
@@ -110,13 +121,24 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        if ($data['subcategory_id'] ?? false) {
-            $product->productSubcategories()->sync([
-                ['category_id' => $request->category_id, 'subcategory_id' => $request->subcategory_id]
-            ]);
-        } else {
-            $product->productCategories()->sync([$request->category_id]);
+        $categories = [];
+        $subCategories = [];
+
+        foreach ($request->product_categories ?? [] as $productCategory) {
+            if (isset($productCategory['is_subcategory']) && $productCategory['is_subcategory']) {
+                $subCategories[] = [
+                    'category_id' => $productCategory['category_id'],
+                    'subcategory_id' => $productCategory['id'],
+                ];
+            } else {
+                $subCategories[] = [
+                    'category_id' => $productCategory['id'],
+                ];
+            }
         }
+
+        $product->productCategories()->sync($categories);
+        $product->productSubcategories()->sync($subCategories);
 
         return new ProductResource($product);
     }

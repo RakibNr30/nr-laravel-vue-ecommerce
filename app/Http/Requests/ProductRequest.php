@@ -30,9 +30,6 @@ class ProductRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'published' => ['required', 'boolean'],
             'product_categories' => ['nullable'],
-            'product_subcategories' => ['nullable'],
-            'category_id' => ['required'],
-            'subcategory_id' => ['nullable'],
         ];
     }
 }

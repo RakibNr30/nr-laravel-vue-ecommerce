@@ -10,10 +10,10 @@
       <div class="fixed z-10 inset-0 overflow-y-auto">
         <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
           <TransitionChild as="template" enter="ease-out duration-300"
-                           enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                           enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
-                           leave-from="opacity-100 translate-y-0 sm:scale-100"
-                           leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+               enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+               enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
+               leave-from="opacity-100 translate-y-0 sm:scale-100"
+               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <DialogPanel
               class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-[700px] sm:w-full">
               <Spinner v-if="loading"
@@ -44,8 +44,22 @@
               </header>
               <form @submit.prevent="onSubmit">
                 <div class="bg-white px-4 pt-5 pb-4">
-                  <CustomInput type="multiselect" class="mb-2" :select-options="categories" v-model="product.product_categories" required="true" label="Category"/>
-<!--                  <CustomInput type="multiselect" class="mb-2" :select-options="subCategories" v-model="product.subcategory_id" label="Subcategory"/>-->
+                  <div class="mb-2 rounded-md shadow-sm">
+                    <div v-for="category in categories" :key="category.id">
+                      <input type="checkbox" v-model="product.product_categories" :value="category"
+                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      />
+                      <label class="mr-2 ml-1 relative" style="bottom: 2px">{{category.name}}</label>
+                        <div class="ml-4">
+                          <div v-for="subcategory in category.subcategories" :key="subcategory.id">
+                            <input type="checkbox" v-model="product.product_categories" :value="subcategory"
+                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                            />
+                            <label class="mr-2 ml-1 relative" style="bottom: 2px">{{subcategory.name}}</label>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
                   <CustomInput class="mb-2" v-model="product.title" label="Product Title"/>
                   <CustomInput type="file" class="mb-2" label="Product Image" @change="file => product.image = file"/>
                   <CustomInput type="textarea" class="mb-2" v-model="product.description" label="Description"/>
@@ -82,14 +96,12 @@ import Spinner from "../../components/core/Spinner.vue";
 
 const product = ref({
   id: props.product.id,
-  category_id: props.product.product_categories ? props.product.product_categories[0].category_id : '',
-  subcategory_id: props.product.product_subcategories ? props.product.product_subcategories[0].subcategory_id : '',
   title: props.product.title,
   image: props.product.image,
   description: props.product.description,
   price: props.product.price,
   published: props.product.published,
-  product_categories: props.product.product_categories
+  product_categories: props.product.product_categories ? props.product.product_categories : []
 })
 
 const loading = ref(false)
@@ -104,16 +116,10 @@ const props = defineProps({
 
 onMounted(() => {
   store.dispatch('getCategories')
-  store.dispatch('getSubcategories')
 })
 
 const categories = computed(() => store.state.categories.data.map(category => ({
-    id: category.id, name: category.name
-  }))
-)
-
-const subCategories = computed(() => store.state.subcategories.data.map(subCategory => ({
-    key: subCategory.id, text: subCategory.name
+    id: category.id, name: category.name, subcategories: category.subcategories
   }))
 )
 
@@ -127,14 +133,12 @@ const show = computed({
 onUpdated(() => {
   product.value = {
     id: props.product.id,
-    category_id: props.product.product_categories ? props.product.product_categories[0].category_id : '',
-    subcategory_id: props.product.product_subcategories ? props.product.product_subcategories[0].subcategory_id : '',
     title: props.product.title,
     image: props.product.image,
     description: props.product.description,
     price: props.product.price,
     published: props.product.published,
-    product_categories: props.product.product_categories,
+    product_categories: props.product.product_categories ? props.product.product_categories : [],
   }
 })
 

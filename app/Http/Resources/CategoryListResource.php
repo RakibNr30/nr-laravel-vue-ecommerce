@@ -19,6 +19,14 @@ class CategoryListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'subcategories' => $this->subcategories->map(fn($item) => [
+                'id' => $item->id,
+                'name' => $item->name,
+                'is_subcategory' => true,
+                'category_id' => $this->id,
+                'created_at' => (new \DateTime($item->created_at))->format('Y-m-d H:i:s'),
+                'updated_at' => (new \DateTime($item->updated_at))->format('Y-m-d H:i:s'),
+            ]),
             'productCategories' => $this->productCategories->map(fn($item) => [
                 'id' => $item->id,
                 'created_at' => (new \DateTime($item->created_at))->format('Y-m-d H:i:s'),
